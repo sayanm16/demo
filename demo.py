@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 import time
 
-# Custom CSS for animations & effects
+# Custom CSS for background and animations
 st.markdown("""
     <style>
         @keyframes fadeIn {
@@ -12,11 +12,12 @@ st.markdown("""
 
         .stApp {
             animation: fadeIn 1.5s ease-in-out;
-            background: linear-gradient(to right, #74ebd5, #acb6e5);
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
         }
 
         .title {
-            font-size: 30px;
+            font-size: 32px;
             text-align: center;
             font-weight: bold;
             color: #ffffff;
@@ -24,32 +25,34 @@ st.markdown("""
         }
 
         .stButton>button {
-            background-color: #007bff;
+            background-color: #ff9800;
             color: white;
-            font-size: 16px;
-            border-radius: 8px;
+            font-size: 18px;
+            border-radius: 10px;
             width: 100%;
+            padding: 10px;
             transition: all 0.3s ease-in-out;
             animation: fadeIn 2s;
         }
 
         .stButton>button:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
+            background-color: #e68900;
+            transform: scale(1.08);
         }
 
         .solution-box {
             padding: 15px;
             border-radius: 10px;
-            background: white;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
             margin-top: 20px;
             animation: fadeIn 2s ease-in-out;
+            color: black;
         }
     </style>
 """, unsafe_allow_html=True)
 
-# Title with fade-in effect
+# Title
 st.markdown('<h1 class="title">🔢 Linear Equation Solver</h1>', unsafe_allow_html=True)
 
 # Function for Gaussian Elimination with Pivoting
