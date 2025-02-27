@@ -1,8 +1,7 @@
 import streamlit as st
 import numpy as np
-import time
 
-# Custom CSS for background and animations
+# Custom CSS for background and styling
 st.markdown("""
     <style>
         @keyframes fadeIn {
@@ -11,7 +10,7 @@ st.markdown("""
         }
 
         .stApp {
-            animation: fadeIn 1.5s ease-in-out;
+            animation: fadeIn 1s ease-in-out;
             background: linear-gradient(to right, #6a11cb, #2575fc);
             color: white;
         }
@@ -21,7 +20,7 @@ st.markdown("""
             text-align: center;
             font-weight: bold;
             color: #ffffff;
-            animation: fadeIn 2s;
+            animation: fadeIn 1.5s;
         }
 
         .stButton>button {
@@ -32,12 +31,11 @@ st.markdown("""
             width: 100%;
             padding: 10px;
             transition: all 0.3s ease-in-out;
-            animation: fadeIn 2s;
         }
 
         .stButton>button:hover {
             background-color: #e68900;
-            transform: scale(1.08);
+            transform: scale(1.05);
         }
 
         .solution-box {
@@ -46,7 +44,6 @@ st.markdown("""
             background: rgba(255, 255, 255, 0.9);
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
             margin-top: 20px;
-            animation: fadeIn 2s ease-in-out;
             color: black;
         }
     </style>
@@ -92,50 +89,42 @@ for i in range(int(num_equations)):
     eq = st.text_input(f"✏️ Equation {i+1}", value="0 0 0 0", help="Enter coefficients and constant separated by spaces")
     equations.append(eq)
 
-if st.button("🚀 Solve with Animation"):
-    with st.spinner("🛠️ Solving... Please wait!"):
-        time.sleep(2)  # Simulate computation time
-        try:
-            A = []
-            b = []
-            for eq in equations:
-                coeffs = list(map(float, eq.split()))
-                if len(coeffs) != num_equations + 1:
-                    st.error(f"⚠️ Equation {eq} does not have the correct number of terms. Please check your input.")
-                    st.stop()
-                
-                A.append(coeffs[:-1])
-                b.append(coeffs[-1])
+if st.button("✅ Solve"):
+    try:
+        A = []
+        b = []
+        for eq in equations:
+            coeffs = list(map(float, eq.split()))
+            if len(coeffs) != num_equations + 1:
+                st.error(f"⚠️ Equation {eq} does not have the correct number of terms. Please check your input.")
+                st.stop()
             
-            A = np.array(A, dtype=float)
-            b = np.array(b, dtype=float)
-            
-            solution = gaussian_elimination_pivoting(A, b)
-            
-            if solution is not None:
-                st.success("✅ Solution Found!")
-                with st.container():
-                    st.markdown('<div class="solution-box">', unsafe_allow_html=True)
-                    st.subheader("📌 Solution:")
-                    for i, val in enumerate(solution):
-                        st.write(f"**x{i+1} = {val:.6f}**")
-                    st.markdown('</div>', unsafe_allow_html=True)
-                
-                # Show progress bar for effect
-                progress_bar = st.progress(0)
-                for percent_complete in range(100):
-                    time.sleep(0.01)
-                    progress_bar.progress(percent_complete + 1)
-                
-                # Verification
-                st.subheader("🛠️ Verification:")
-                for i, eq in enumerate(equations):
-                    coeffs = list(map(float, eq.split()))
-                    result = sum(c * x for c, x in zip(coeffs[:-1], solution))
-                    st.write(f"✅ **Equation {i+1}: {result:.6f} ≈ {coeffs[-1]}**")
+            A.append(coeffs[:-1])
+            b.append(coeffs[-1])
         
-        except Exception as e:
-            st.error(f"❌ An error occurred: {str(e)}")
+        A = np.array(A, dtype=float)
+        b = np.array(b, dtype=float)
+        
+        solution = gaussian_elimination_pivoting(A, b)
+        
+        if solution is not None:
+            st.success("✅ Solution Found!")
+            with st.container():
+                st.markdown('<div class="solution-box">', unsafe_allow_html=True)
+                st.subheader("📌 Solution:")
+                for i, val in enumerate(solution):
+                    st.write(f"**x{i+1} = {val:.6f}**")
+                st.markdown('</div>', unsafe_allow_html=True)
+
+            # Verification
+            st.subheader("🛠️ Verification:")
+            for i, eq in enumerate(equations):
+                coeffs = list(map(float, eq.split()))
+                result = sum(c * x for c, x in zip(coeffs[:-1], solution))
+                st.write(f"✅ **Equation {i+1}: {result:.6f} ≈ {coeffs[-1]}**")
+    
+    except Exception as e:
+        st.error(f"❌ An error occurred: {str(e)}")
 
 # Sidebar Guide with Icons
 st.sidebar.markdown("""
@@ -143,6 +132,5 @@ st.sidebar.markdown("""
 1. **Enter the number of equations.**
 2. **Input each equation** with coefficients and constant separated by spaces.  
    Example: `2 3 -1 5` for `2x + 3y - z = 5`
-3. Click **"Solve with Animation"** to compute the solution.
-4. Watch the progress bar and enjoy the smooth animation effects! 🎉
+3. Click **"Solve"** to compute the solution instantly.
 """)
