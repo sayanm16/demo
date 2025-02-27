@@ -1,10 +1,6 @@
 import streamlit as st
 import numpy as np
 import time
-from streamlit_lottie import st_lottie
-
-# Load Lottie animation
-lottie_url = "https://assets2.lottiefiles.com/packages/lf20_q5pk6p1k.json"
 
 # Custom CSS for animations & effects
 st.markdown("""
@@ -16,7 +12,7 @@ st.markdown("""
 
         .stApp {
             animation: fadeIn 1.5s ease-in-out;
-            background-image: linear-gradient(to right, #74ebd5, #acb6e5);
+            background: linear-gradient(to right, #74ebd5, #acb6e5);
         }
 
         .title {
@@ -55,9 +51,6 @@ st.markdown("""
 
 # Title with fade-in effect
 st.markdown('<h1 class="title">🔢 Linear Equation Solver</h1>', unsafe_allow_html=True)
-
-# Load animation
-st_lottie(lottie_url, height=150)
 
 # Function for Gaussian Elimination with Pivoting
 def gaussian_elimination_pivoting(A, b):
